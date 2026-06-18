@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container estreito">
+    <header class="topo">
+        <div>
+            <span class="eyebrow">Cadastro</span>
+            <h1 th:text="${tarefa.id == null} ? 'Nova tarefa' : 'Editar tarefa'">Nova tarefa</h1>
+        </div>
+        <a class="link" th:href="@{/tarefas}">Voltar</a>
+    </header>
+
+    <form class="formulario" th:action="@{/tarefas}" th:object="${tarefa}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>
+            Titulo
+            <input type="text" th:field="*{titulo}" placeholder="Ex: Estudar Spring Boot" required>
+            <span class="erro" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></span>
+        </label>
+
+        <label>
+            Descricao
+            <textarea th:field="*{descricao}" rows="4" placeholder="Detalhes da tarefa"></textarea>
+        </label>
+
+        <label>
+            Data de entrega
+            <input type="date" th:field="*{dataEntrega}">
+        </label>
+
+        <label class="checkbox">
+            <input type="checkbox" th:field="*{concluida}">
+            Tarefa concluida
+        </label>
+
+        <button class="botao" type="submit">Salvar</button>
+    </form>
+</main>
+</body>
+</html>

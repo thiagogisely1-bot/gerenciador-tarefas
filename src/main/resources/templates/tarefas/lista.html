@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container">
+    <header class="topo">
+        <div>
+            <span class="eyebrow">Painel</span>
+            <h1>Gerenciador de Tarefas</h1>
+        </div>
+        <a class="botao" th:href="@{/tarefas/nova}">Nova tarefa</a>
+    </header>
+
+    <section class="lista" th:if="${!tarefas.isEmpty()}">
+        <article class="tarefa" th:each="tarefa : ${tarefas}" th:classappend="${tarefa.concluida} ? ' concluida'">
+            <div>
+                <h2 th:text="${tarefa.titulo}">Titulo</h2>
+                <p th:text="${tarefa.descricao}">Descricao</p>
+                <small th:if="${tarefa.dataEntrega}" th:text="'Entrega: ' + ${#temporals.format(tarefa.dataEntrega, 'dd/MM/yyyy')}"></small>
+            </div>
+            <div class="acoes">
+                <form th:action="@{/tarefas/{id}/status(id=${tarefa.id})}" method="post">
+                    <button type="submit" th:text="${tarefa.concluida} ? 'Reabrir' : 'Concluir'">Concluir</button>
+                </form>
+                <a th:href="@{/tarefas/{id}/editar(id=${tarefa.id})}">Editar</a>
+                <form th:action="@{/tarefas/{id}/excluir(id=${tarefa.id})}" method="post">
+                    <button class="perigo" type="submit">Excluir</button>
+                </form>
+            </div>
+        </article>
+    </section>
+
+    <section class="vazio" th:if="${tarefas.isEmpty()}">
+        <h2>Nenhuma tarefa cadastrada</h2>
+        <p>Crie a primeira tarefa para comecar a organizar sua rotina.</p>
+    </section>
+</main>
+</body>
+</html>
